@@ -18,7 +18,7 @@
       "ap-southeast-2" : { "AMIID" : "ami-862211e5" }
     }
   },
-  "Parameters": {
+  "Parameters": {    
     "EcsInstanceType": {
       "Type": "String",
       "Description": "ECS EC2 instance type",
@@ -111,7 +111,7 @@
     "EcsCluster" : {
       "Type" : "String",
       "Description" : "ECS Cluster Name",
-      "Default" : "Jenkins-Cluster"
+      "Default" : "getting-started"
     }
   },
   "Conditions": {

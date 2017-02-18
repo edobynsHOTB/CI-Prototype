@@ -18,7 +18,7 @@
       "MinLength" : 1,
       "MaxLength" : 255,
       "AllowedPattern" : "^[a-zA-Z][-a-zA-Z0-9]*$",
-      "Default" : "JenkinsCluster"
+      "Default" : "EcsClusterStack"
     },
 
     "SSHLocation": {

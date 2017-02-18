@@ -1,9 +1,9 @@
 {
-    "family": "california-prototype",
+    "family": "hello-world",
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
-            "name": "california-prototype",
+            "name": "hello-world",
             "cpu": 10,
             "memory": 256,
             "essential": true,
