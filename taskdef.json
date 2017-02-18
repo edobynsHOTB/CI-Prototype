@@ -1,9 +1,9 @@
 {
-    "family": "hello-world-new",
+    "family": "hello-world-newest",
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
-            "name": "hello-world-test-three",
+            "name": "hello-world-test-four",
             "cpu": 10,
             "memory": 256,
             "essential": true,
