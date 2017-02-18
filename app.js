@@ -8,6 +8,7 @@ process.env.PORT = 8080;
 
 // Initialize Server
 app.listen(process.env.PORT, function() {
+  console.log('Wooooooo Hoooooooooo!!!');
   console.log('Listening on port:' + process.env.PORT);
 });
  
