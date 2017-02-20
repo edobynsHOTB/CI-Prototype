@@ -22,10 +22,10 @@ node {
   stage ('ECR Login') {
 
     switch (branchfolder) {
-      case master:
+      case "master":
         println "MASTER BRANCH!"
         break
-      case server:
+      case "server":
         println "SERVER BRANCH!"
         break
     }
