@@ -20,9 +20,6 @@ node {
 
   
   stage ('Publish') {
-    docker.image('hello-world').withRun() {c ->
-      sh "curl http://${hostIp(c)}"
-    }
 
     sh '''#!/bin/bash
         $(aws ecr get-login --region us-west-1)
