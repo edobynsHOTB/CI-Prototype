@@ -5,6 +5,8 @@ node {
     checkout scm
   
     sh 'echo $BRANCH_NAME'
+    def branch = env.BRANCH_NAME
+    echo branch
   }
   
   stage ('ECR Login') {
