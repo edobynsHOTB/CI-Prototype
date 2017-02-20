@@ -21,7 +21,7 @@ node {
   stage ('Publish') {
 
     docker.image('hello-world').withRun() {c ->
-      sh "curl -i --user "username:password" http://localhost:80/ "
+      sh "curl -i http://localhost:80/ --user "username:password""
     }
 
     //docker.image('hello-world').withRun {c ->
