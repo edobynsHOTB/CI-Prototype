@@ -7,7 +7,7 @@ node {
     sh '''#!/bin/bash
 
     branchname=$(git describe --contains --all HEAD)
-    echo $branchname | sed "remotes/origin/"
+    echo $branchname | sed "s@remotes/origin/@@"
     '''
   }
   
