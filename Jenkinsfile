@@ -20,10 +20,8 @@ node {
   
   stage ('Publish') {
 
-    docker.image('hello-world').withRun() {c ->
-      sh '''#!/bin/bash
-      curl -i http://localhost:80/
-      '''
+    docker.image('hello-world').withRun(-p 80) {c ->
+    
     }
 
     //docker.image('hello-world').withRun {c ->
