@@ -4,9 +4,9 @@ node {
     //echo env.BRANCH_NAME
     checkout scm
   
-    sh 'echo $BRANCH_NAME'
-    def branch = env.BRANCH_NAME
-    echo branch
+    sh '''#!/bin/bash
+    branch=$(git symbolic-ref --short HEAD)
+    '''
   }
   
   stage ('ECR Login') {
