@@ -20,8 +20,8 @@ node {
   
   stage ('Publish') {
 
-    docker.image('hello-world').withRun('-p 8080:80') {c ->
-      sh "curl -i http://${hostIp(c)}:8080/"
+    docker.image('hello-world').withRun() {c ->
+      sh "curl -i http://${hostIp(c)}:80/"
     }
 
     //docker.image('hello-world').withRun {c ->
