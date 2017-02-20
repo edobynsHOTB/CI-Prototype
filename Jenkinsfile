@@ -4,7 +4,7 @@ node {
     //echo env.BRANCH_NAME
     checkout scm
   
-    echo $BRANCH_NAME
+    sh 'echo $BRANCH_NAME'
   }
   
   stage ('ECR Login') {
