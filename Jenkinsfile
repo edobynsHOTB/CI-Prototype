@@ -35,9 +35,9 @@ node {
         println "DEFAULT!!!"
     }
 
-    if (branchfolder.compareTo(${"master"})) {
+    if (branchfolder.compareTo(${'master'})) {
       println "if statement - master"
-    } else if (branchfolder.compareTo(${"server"})) {
+    } else if (branchfolder.compareTo(${'server'})) {
       println "if statement - server"
     }
     
