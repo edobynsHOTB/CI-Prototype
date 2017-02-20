@@ -1,6 +1,6 @@
 
 def hostIp(container) {
-  sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
+  sh "docker inspect -f {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} ${container.id} > hostIp"
   readFile('hostIp').trim()
 }
 
