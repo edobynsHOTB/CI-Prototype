@@ -21,6 +21,9 @@ node {
   
   stage ('ECR Login') {
 
+    println branchfolder
+    println "master"
+
     switch (branchfolder) {
       case "master":
         println "MASTER BRANCH!"
@@ -30,6 +33,12 @@ node {
         break
       default:
         println "DEFAULT!!!"
+    }
+
+    if (branchfolder == "master") {
+      println "if statement - master"
+    } else if (branchfolder == "server") {
+      println "if statement - server"
     }
     
     sh '''#!/bin/bash
