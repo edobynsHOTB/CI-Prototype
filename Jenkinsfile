@@ -13,7 +13,7 @@ node {
     newerVar=${newVar#*/}
     finalVar=${newerVar%%/*}
     echo $finalVar
-    ''', returnStdout: true).toString()
+    ''', returnStdout: true)
   }
 
   println "BRANCH FOLDER:"
@@ -35,7 +35,7 @@ node {
         println "DEFAULT!!!"
     }
 
-    if (branchfolder.equals("master")) {
+    if (branchfolder == "master") {
       println "if statement - master"
     }
     
