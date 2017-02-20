@@ -16,9 +16,7 @@ node {
  
   stage ('Build & Test') {
     docker.build('hello-world').withRun {
-      sh '''#!/bin/bash
-          curl localhost:80
-      '''
+      sh ./tests/shellTest.sh
       
       //sh "docker logs ${c.id}"
     }
