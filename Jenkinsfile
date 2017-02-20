@@ -20,14 +20,16 @@ node {
   
   stage ('Publish') {
 
-  docker.image('httpd').withRun('-p 8080:80') {c ->
-    sh "curl -i http://${hostIp(c)}:8080/"
-  }
+    def hostIp(container) {
+      sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
+      readFile('hostIp').trim()
+    }
 
-  def hostIp(container) {
-    sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
-    readFile('hostIp').trim()
-  }
+    docker.image('httpd').withRun('-p 8080:80') {c ->
+      sh "curl -i http://${hostIp(c)}:8080/"
+    }
+
+
 
     //docker.image('hello-world').withRun {c ->
     //  sh(script: 'tests/shellTest.sh', returnStdout: true).trim()
