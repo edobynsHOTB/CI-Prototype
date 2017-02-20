@@ -89,9 +89,3 @@ node {
     '''
   }
 }
-
-
-def hostIp(container) {
-  sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
-  readFile('hostIp').trim()
-}
