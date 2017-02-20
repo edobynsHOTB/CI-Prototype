@@ -8,7 +8,7 @@ node {
     checkout scm
   
     branchfolder = sh(script: '''#!/bin/bash
-    echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
+    //echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
     gitHead=$(git describe --contains --all HEAD)
     newVar=${gitHead#*/}
     newerVar=${newVar#*/}
@@ -21,6 +21,10 @@ node {
   println branchfolder
   
   stage ('ECR Login') {
+
+    println"again:"
+    println branchfolder
+    
     sh '''#!/bin/bash
     $(aws ecr get-login --region us-west-1)
     '''
