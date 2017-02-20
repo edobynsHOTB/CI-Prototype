@@ -2,7 +2,14 @@ node {
   stage ('Checkout') {
     //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
     //echo env.BRANCH_NAME
-    checkout scm
+    //checkout scm
+
+    checkout([
+                 $class: 'GitSCM',
+                 branches: scm.branches,
+                 extensions: scm.extensions + [[$class: 'CleanCheckout']],
+                 userRemoteConfigs: scm.userRemoteConfigs
+            ])
   
     sh '''#!/bin/bash
 
