@@ -1,6 +1,6 @@
 node {
 
-  String branchfolder
+  String branchfolder = ""
 
   stage ('Checkout') {
     //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
