@@ -5,9 +5,11 @@ node {
     checkout scm
   
     sh '''#!/bin/bash
-
-    branchname=$(git describe --contains --all HEAD)
-    echo $branchname | sed "s@remotes/origin/@@"
+    echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
+    FULL_BRANCH=$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
+    arr=(${FULL_BRANCH//// })
+    BRANCH_FOLDER=${arr[0]}
+    echo $BRANCH
     '''
   }
   
