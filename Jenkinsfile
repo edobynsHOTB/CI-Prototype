@@ -3,23 +3,21 @@ node {
   String branchfolder = ""
 
   stage ('Checkout') {
-    //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
-    //echo env.BRANCH_NAME
     checkout scm
   
     branchfolder = sh(script: '''#!/bin/bash
-    gitHead=$(git describe --contains --all HEAD)
-    newVar=${gitHead#*/}
-    newerVar=${newVar#*/}
-    finalVar=${newerVar%%/*}
-    echo $finalVar
+        gitHead=$(git describe --contains --all HEAD)
+        newVar=${gitHead#*/}
+        newerVar=${newVar#*/}
+        finalVar=${newerVar%%/*}
+        echo $finalVar
     ''', returnStdout: true).trim()
   }
  
   stage ('Build & Test') {
     docker.build('hello-world').withRun {
       sh "curl localhost:80"
-      sh "docker logs ${c.id}"
+      //sh "docker logs ${c.id}"
     }
   }
   
