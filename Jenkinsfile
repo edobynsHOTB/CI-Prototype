@@ -1,13 +1,13 @@
 node {
   stage ('Checkout') {
-    git 'https://github.com/edobynsHOTB/CI-Prototype.git'
+    //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
     //echo env.BRANCH_NAME
-    //checkout scm
+    checkout scm
   
     sh '''#!/bin/bash
 
-    branchname=$(git symbolic-ref --short HEAD)
-    echo $branchname
+    branchname=$(git describe --contains --all HEAD)
+    echo $branchname | sed "remotes/origin/"
     '''
   }
   
