@@ -20,18 +20,9 @@ node {
 
   
   stage ('Publish') {
-
-
-
-    docker.image('hello-world').withRun('-p 8080:80') {c ->
-      
+    docker.image('hello-world').withRun() {c ->
+      sh "curl http://${hostIp(c)}"
     }
-
-
-
-    //docker.image('hello-world').withRun {c ->
-    //  sh(script: 'tests/shellTest.sh', returnStdout: true).trim()
-    //}
 
     sh '''#!/bin/bash
         $(aws ecr get-login --region us-west-1)
@@ -102,3 +93,8 @@ node {
   }
 }
 
+
+def hostIp(container) {
+  sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
+  readFile('hostIp').trim()
+}
