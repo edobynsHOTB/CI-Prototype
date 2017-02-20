@@ -15,6 +15,11 @@ node {
     BRANCH_FOLDER=${arr[0]}
     echo ${arr[0]}
     branchfolder=${arr[0]}
+
+    echo ${(${$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"//// })[0]}
+    branchfolder=${(${$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"//// })[0]}
+
+
     '''
   }
 
