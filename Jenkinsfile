@@ -22,7 +22,7 @@ node {
 
     docker.image('hello-world').withRun() {c ->
       sh '''#!/bin/bash
-      curl http://localhost:80/ -u username:password
+      curl -i http://localhost:80/
       '''
     }
 
