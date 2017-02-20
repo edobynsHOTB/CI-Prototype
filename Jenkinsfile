@@ -7,16 +7,14 @@ node {
     //echo env.BRANCH_NAME
     checkout scm
   
-    sh '''#!/bin/bash
+    branchfolder="sh '''#!/bin/bash
     echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
     gitHead=$(git describe --contains --all HEAD)
     newVar=${gitHead#*/}
     newerVar=${newVar#*/}
     finalVar=${newerVar%%/*}
     echo $finalVar
-    branchfolder=$finalVar
-
-    '''
+    '''".execute()
   }
 
   println "BRANCH FOLDER:"
