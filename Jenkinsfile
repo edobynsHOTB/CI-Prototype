@@ -28,6 +28,8 @@ node {
       case "server":
         println "SERVER BRANCH!"
         break
+      default:
+        println "DEFAULT!!!"
     }
     
     sh '''#!/bin/bash
