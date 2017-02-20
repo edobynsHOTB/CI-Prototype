@@ -5,13 +5,14 @@ node {
     checkout scm
   
     sh '''#!/bin/bash
-    branchname=$(git describe --contains --all HEAD)
+
+    branchname=$(git symbolic-ref --short HEAD)
     echo $branchname
     '''
   }
   
   stage ('ECR Login') {
-    sh '''#!/bin/bash -l
+    sh '''#!/bin/bash
     $(aws ecr get-login --region us-west-1)
     '''
   }
@@ -28,7 +29,7 @@ node {
   }
   
   stage ('Create ECS Task Definition') {
-    sh '''#!/bin/bash -l
+    sh '''#!/bin/bash
     
         REGION=us-west-1
         REPOSITORY_NAME=hello-world
