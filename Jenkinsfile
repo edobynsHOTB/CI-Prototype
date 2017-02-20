@@ -8,7 +8,6 @@ node {
     checkout scm
   
     branchfolder = sh(script: '''#!/bin/bash
-    //echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
     gitHead=$(git describe --contains --all HEAD)
     newVar=${gitHead#*/}
     newerVar=${newVar#*/}
