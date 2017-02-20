@@ -16,7 +16,7 @@ node {
  
   stage ('Build & Test') {
     docker.build('hello-world').withRun {
-      sh "curl localhost:80"
+      sh "sudo curl localhost:80"
       //sh "docker logs ${c.id}"
     }
   }
