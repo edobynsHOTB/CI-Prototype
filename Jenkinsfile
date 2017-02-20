@@ -15,7 +15,7 @@ node {
   }
  
   stage ('Build & Test') {
-    docker.build('hello-world').withRun {
+    docker.build('hello-world').withRun {c ->
 
       sh '''#!/bin/bash
       echo $pwd
