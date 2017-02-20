@@ -1,8 +1,8 @@
 node {
   stage ('Checkout') {
-    //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
-    checkout scm
-    echo ${env.BRANCH_NAME}
+    git 'https://github.com/edobynsHOTB/CI-Prototype.git'
+    //checkout scm
+    //echo ${env.BRANCH_NAME}
     
     // List of all configured branches
     def allBranches = scm.branches
