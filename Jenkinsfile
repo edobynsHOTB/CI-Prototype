@@ -15,45 +15,27 @@ node {
     echo $finalVar
     ''', returnStdout: true).trim()
   }
-
-  println "BRANCH FOLDER:"
-  println branchfolder
-  
-  stage ('ECR Login') {
-
-    println branchfolder
-    println "master"
-
-    switch (branchfolder) {
-      case "master":
-        println "MASTER BRANCH!"
-        break
-      case "server":
-        println "SERVER BRANCH!"
-        break
-    }
-
-    if (branchfolder == "master") {
-      println "if statement - master"
-    }
-    
-    sh '''#!/bin/bash
-    $(aws ecr get-login --region us-west-1)
-    '''
-  }
  
-  stage ('Docker Build') {
-    docker.build('hello-world')
+  stage ('Build & Test') {
+    docker.build('hello-world').withRun {
+      sh "curl localhost:80"
+      sh "docker logs ${c.id}"
+    }
   }
   
-  stage ('Docker Push') {
+  stage ('Publish') {
+
+    sh '''#!/bin/bash
+        $(aws ecr get-login --region us-west-1)
+    '''
+
     docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/hello-world', 'ecr:us-west-1:demo-credentials') {
         docker.image('hello-world').push('v_${BUILD_NUMBER}')
         docker.image('hello-world').push('latest')
     }
   }
   
-  stage ('Create ECS Task Definition') {
+  stage ('Start Service') {
     sh '''#!/bin/bash
     
         REGION=us-west-1
@@ -110,14 +92,5 @@ node {
         
     '''
   }
-  
-//   stage ('Create or update ECS Service') {
-      
-//   }
-  
-  sh '''#!/bin/bash -l
-  echo "WOOT WOOT WOOT WOOT WOOT WOOT. I am not an owl..."
-  echo $(pwd)
-  '''
 }
 
