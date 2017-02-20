@@ -9,18 +9,12 @@ node {
   
     sh '''#!/bin/bash
     echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
-    FULL_BRANCH=$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
-    
-    echo ${FULL_BRANCH}
-
-    arr=(${FULL_BRANCH//// })
-    BRANCH_FOLDER=${arr[0]}
-    echo ${arr[0]}
-    branchfolder=${arr[0]}
-
-    echo ${(${$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"//// })[0]}
-    branchfolder=${(${$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"//// })[0]}
-
+    gitHead=$(git describe --contains --all HEAD)
+    newVar=${gitHead#*/}
+    newerVar=${newVar#*/}
+    finalVar=${newerVar%%/*}
+    echo $finalVar
+    branchfolder=$finalVar
 
     '''
   }
