@@ -9,7 +9,7 @@ node {
         gitHead=$(git describe --contains --all HEAD)
         newVar=${gitHead#*/}
         newerVar=${newVar#*/}
-        finalVar=${newerVar%%/*}
+        finalVar=${newerVar%%/*
         echo $finalVar
     ''', returnStdout: true).trim()
   }
@@ -21,7 +21,7 @@ node {
   stage ('Publish') {
 
     docker.image('hello-world').withRun() {c ->
-      sh "curl -i http://localhost:80/ --user "username:password""
+      sh "curl -i http://localhost:80/ --user username:password"
     }
 
     //docker.image('hello-world').withRun {c ->
