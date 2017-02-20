@@ -1,7 +1,8 @@
 node {
   stage ('Checkout') {
-    git 'https://github.com/edobynsHOTB/CI-Prototype.git'
-    echo env.BRANCH_NAME
+    //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
+    //echo env.BRANCH_NAME
+    checkout scm
   }
   
   stage ('ECR Login') {
