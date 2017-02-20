@@ -24,7 +24,7 @@ node {
 
 
     docker.image('hello-world').withRun('-p 8080:80') {c ->
-      sh "curl http://${hostIp(c)}:8080"
+      
     }
 
 
@@ -102,8 +102,3 @@ node {
   }
 }
 
-
-def hostIp(container) {
-  sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
-  readFile('hostIp').trim()
-}
