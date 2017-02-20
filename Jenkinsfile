@@ -15,12 +15,14 @@ node {
   }
  
   stage ('Build & Test') {
-    docker.build('hello-world').withRun {c ->
-
-    }
+    docker.build('hello-world')
   }
   
   stage ('Publish') {
+
+    docker.image('hello-world').withRun {c ->
+      sh(script: 'tests/shellTest', returnStdout: true).trim()
+    }
 
     sh '''#!/bin/bash
         $(aws ecr get-login --region us-west-1)
