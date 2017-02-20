@@ -13,7 +13,7 @@ node {
     newerVar=${newVar#*/}
     finalVar=${newerVar%%/*}
     echo $finalVar
-    ''', returnStdout: true)
+    ''', returnStdout: true).trim()
   }
 
   println "BRANCH FOLDER:"
