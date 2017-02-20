@@ -17,13 +17,15 @@ node {
   stage ('Build & Test') {
     docker.build('hello-world')
   }
+
+  def hostIp(container) {
+    sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
+    readFile('hostIp').trim()
+  }
   
   stage ('Publish') {
 
-    def hostIp(container) {
-      sh "docker inspect -f {{.Node.Ip}} ${container.id} > hostIp"
-      readFile('hostIp').trim()
-    }
+
 
     docker.image('httpd').withRun('-p 8080:80') {c ->
       sh "curl -i http://${hostIp(c)}:8080/"
