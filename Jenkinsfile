@@ -3,8 +3,8 @@ node {
     //git 'https://github.com/edobynsHOTB/CI-Prototype.git'
     //echo env.BRANCH_NAME
     checkout scm
-    echo env.BRANCH_NAME
-    echo BRANCH_NAME
+  
+    echo $BRANCH_NAME
   }
   
   stage ('ECR Login') {
