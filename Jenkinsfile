@@ -3,6 +3,7 @@ node {
     git 'https://github.com/edobynsHOTB/CI-Prototype.git'
     //checkout scm
     echo env.BRANCH_NAME
+    echo env.BRANCH_NAME
     
     // List of all configured branches
     def allBranches = scm.branches
