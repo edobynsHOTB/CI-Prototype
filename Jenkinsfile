@@ -35,10 +35,8 @@ node {
         println "DEFAULT!!!"
     }
 
-    if (branchfolder.compareTo(${'master'})) {
+    if (branchfolder.equals("master")) {
       println "if statement - master"
-    } else if (branchfolder.compareTo(${'server'})) {
-      println "if statement - server"
     }
     
     sh '''#!/bin/bash
