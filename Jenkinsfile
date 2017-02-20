@@ -35,9 +35,9 @@ node {
         println "DEFAULT!!!"
     }
 
-    if (branchfolder == "master") {
+    if (branchfolder.equalsIgnoreCase("master")) {
       println "if statement - master"
-    } else if (branchfolder == "server") {
+    } else if (branchfolder.equalsIgnoreCase("server")) {
       println "if statement - server"
     }
     
