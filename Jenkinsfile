@@ -9,7 +9,7 @@ node {
         gitHead=$(git describe --contains --all HEAD)
         newVar=${gitHead#*/}
         newerVar=${newVar#*/}
-        finalVar=${newerVar%%/*
+        finalVar=${newerVar%%/*}
         echo $finalVar
     ''', returnStdout: true).trim()
   }
@@ -17,9 +17,16 @@ node {
   stage ('Build & Test') {
     docker.build('hello-world')
   }
-
   
   stage ('Publish') {
+
+    docker.image('hello-world').withRun() {c ->
+      sh "curl -i http://localhost:80/"
+    }
+
+    //docker.image('hello-world').withRun {c ->
+    //  sh(script: 'tests/shellTest.sh', returnStdout: true).trim()
+    //}
 
     sh '''#!/bin/bash
         $(aws ecr get-login --region us-west-1)
