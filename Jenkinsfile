@@ -1,15 +1,7 @@
 node {
   stage ('Checkout') {
     git 'https://github.com/edobynsHOTB/CI-Prototype.git'
- 
- 
-    // List of all configured branches
-    def allBranches = scm.branches
-    echo $allBranches
-
-    // Only the first configured branch name
-    def gitBranch = scm.branches[0].name
-    echo $gitBranch
+    echo env.BRANCH_NAME
   }
   
   stage ('ECR Login') {
