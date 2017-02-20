@@ -16,8 +16,7 @@ node {
  
   stage ('Build & Test') {
     docker.build('hello-world').withRun {
-      def out = sh script: 'tests/shellTest', returnStdout: true
-      
+      def out = './tests/shellTest.sh'.execute()
       println out
       
       //sh "docker logs ${c.id}"
