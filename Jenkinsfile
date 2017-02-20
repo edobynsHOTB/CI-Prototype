@@ -7,10 +7,10 @@ node {
     sh '''#!/bin/bash
     echo $(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
     FULL_BRANCH=$(git describe --contains --all HEAD) | sed "s@remotes/origin/@@"
-    echo FULL_BRANCH
+    echo ${FULL_BRANCH}
     arr=(${FULL_BRANCH//// })
     BRANCH_FOLDER=${arr[0]}
-    echo BRANCH_FOLDER
+    echo ${BRANCH_FOLDER}
     '''
   }
   
