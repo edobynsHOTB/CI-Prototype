@@ -24,7 +24,7 @@ node {
 
 
     docker.image('hello-world').withRun('-p 8080:80') {c ->
-      sh "curl -i http://${hostIp(c)}:8080/"
+      sh "curl http://${hostIp(c)}:8080"
     }
 
 
