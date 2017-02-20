@@ -5,7 +5,8 @@ node {
     checkout scm
   
     sh '''#!/bin/bash
-    branch=$(git symbolic-ref --short HEAD)
+    branchname=$(git describe --contains --all HEAD)
+    echo $branchname
     '''
   }
   
