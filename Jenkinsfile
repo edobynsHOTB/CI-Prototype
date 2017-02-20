@@ -21,8 +21,14 @@ node {
   
   stage ('ECR Login') {
 
-    println"again:"
-    println branchfolder
+    switch (branchfolder) {
+      case master:
+        println "MASTER BRANCH!"
+        break
+      case server:
+        println "SERVER BRANCH!"
+        break
+    }
     
     sh '''#!/bin/bash
     $(aws ecr get-login --region us-west-1)
