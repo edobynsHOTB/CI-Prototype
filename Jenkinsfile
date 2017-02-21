@@ -108,7 +108,7 @@ node {
     '''
 
     sh '''#!/bin/bash
-    python tests/apiTest.py "http://13.56.3.25:3000"
+    python tests/apiTest.py 13.56.3.25:3000
     '''
   }
 }
