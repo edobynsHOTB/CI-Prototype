@@ -1,6 +1,7 @@
 import httplib
+import sys
 
-url = arg[1]
+url = sys.argv[1]
 
 conn = httplib.HTTPConnection(url)
 conn.request("HEAD", "/")
