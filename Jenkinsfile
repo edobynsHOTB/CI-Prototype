@@ -19,13 +19,13 @@ node {
     }
 
     stage ('Build') {
-        if (BRANCH_PLATFORM == "master") {
+        if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
             docker.build('hello-world')
         }
     }
 
     stage ('Publish') {
-        if (BRANCH_PLATFORM == "master") {
+        if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
             sh '''#!/bin/bash
                 $(aws ecr get-login --region us-west-1)
             '''
@@ -38,7 +38,7 @@ node {
     }
 
     stage ('Deploy to Staging') {
-        if (BRANCH_PLATFORM == "master") {
+        if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
 
             // Create New Task Definition and Create or Update ECS Service
             sh '''#!/bin/bash
@@ -83,12 +83,15 @@ node {
     }
 
     stage ('Test') {
+        // Run Tests 
         //sh '''#!/bin/bash
         //python tests/apiTest.py 13.56.3.25:3000
         //'''
+
+        // Tear Down Staging?
     }
 
-    stage ('Deploy to Pre-Production') {
+    stage ('Deploy to Pre-Prod') {
 
     }
 }
