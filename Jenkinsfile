@@ -1,17 +1,11 @@
-
-def hostIp(container) {
-  sh "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${container.id} > hostIp"
-  readFile('hostIp').trim()
-}
-
 node {
 
-  String branchfolder = ""
+  String BRANCH_PLATFORM = ""
 
   stage ('Checkout') {
     checkout scm
   
-    branchfolder = sh(script: '''#!/bin/bash
+    BRANCH_PLATFORM = sh(script: '''#!/bin/bash
         gitHead=$(git describe --contains --all HEAD)
         newVar=${gitHead#*/}
         newerVar=${newVar#*/}
@@ -20,26 +14,11 @@ node {
     ''', returnStdout: true).trim()
   }
  
-  stage ('Build & Test') {
+  stage ('Build') {
     docker.build('hello-world')
   }
   
   stage ('Publish') {
-
-    //docker.image('hello-world').withRun('-p 3000:3000') {c ->
-      //sh "python tests/apiTest.py ${hostIp(c)}:3000"
-      
-
-      //python tests/apiTest.py URL
-      //sh "curl ${hostIp(c)}:3000"
-      //sh "curl -si http://${hostIp(c)}:3000/ -u edobyns:5b3771addfb503117607c54e443102a3"
-      //sh "wget --auth-no-challenge --http-user=edobyns --http-password=5b3771addfb503117607c54e443102a3 --secure-protocol=TLSv1 http://localhost:3000"
-    //}
-
-    //docker.image('hello-world').withRun {c ->
-    //  sh(script: 'tests/shellTest.sh', returnStdout: true).trim()
-    //}
-
     sh '''#!/bin/bash
         $(aws ecr get-login --region us-west-1)
     '''
@@ -50,7 +29,7 @@ node {
     }
   }
   
-  stage ('Start Service') {
+  stage ('Create/Update ECS Service') {
     sh '''#!/bin/bash
     
         REGION=us-west-1
@@ -106,7 +85,9 @@ node {
         fi        
         
     '''
+  }
 
+  stage ('Test') {
     sh '''#!/bin/bash
     python tests/apiTest.py 13.56.3.25:3000
     '''
