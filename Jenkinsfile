@@ -26,15 +26,15 @@ node {
   
   stage ('Publish') {
 
-    docker.image('hello-world').withRun('-p 3000:3000') {c ->
-      sh "python tests/apiTest.py ${hostIp(c)}:3000"
+    //docker.image('hello-world').withRun('-p 3000:3000') {c ->
+      //sh "python tests/apiTest.py ${hostIp(c)}:3000"
 
 
       //python tests/apiTest.py URL
       //sh "curl ${hostIp(c)}:3000"
       //sh "curl -si http://${hostIp(c)}:3000/ -u edobyns:5b3771addfb503117607c54e443102a3"
       //sh "wget --auth-no-challenge --http-user=edobyns --http-password=5b3771addfb503117607c54e443102a3 --secure-protocol=TLSv1 http://localhost:3000"
-    }
+    //}
 
     //docker.image('hello-world').withRun {c ->
     //  sh(script: 'tests/shellTest.sh', returnStdout: true).trim()
