@@ -28,7 +28,7 @@ node {
 
     //docker.image('hello-world').withRun('-p 3000:3000') {c ->
       //sh "python tests/apiTest.py ${hostIp(c)}:3000"
-
+      
 
       //python tests/apiTest.py URL
       //sh "curl ${hostIp(c)}:3000"
@@ -106,5 +106,7 @@ node {
         fi        
         
     '''
+
+    sh "python tests/apiTest.py http://13.56.3.25:3000/"
   }
 }
