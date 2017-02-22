@@ -17,10 +17,13 @@ event1.save(function (err) {
 
 app.get('/', function (req, res) {
 
-    mongoose.connection.db.collectionNames(function (err, names) {
-        console.log(names); // [{ name: 'dbname.myCollection' }]
-        res.send(names);
-    });
+    const connection = mongoose.connection;
+    Object.keys(connection.models).forEach((collection) => {
+        // You can get the string name.
+        console.info(collection);
+        // Or you can do something else with the model.
+        res.send(collection);
+});
 
     // res.send('This would be where someone might say, "Fuck you World" - connected to mongo...')
 })
