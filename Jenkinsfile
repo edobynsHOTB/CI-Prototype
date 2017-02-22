@@ -24,10 +24,9 @@ node {
 
             sh '''
             cd ./src/Nodejs 
-            docker-compose build -p
-            '''
-
+            docker-compose build
             docker tag nodejs_hello-world hello-world
+            '''
         }
     }
 
