@@ -1,9 +1,23 @@
 {
     "family": "hello-world-newest",
+    "volumes": [
+        {
+            "name": "app",
+            "host": {
+                "sourcePath": "./:/app"
+            }
+        },
+        {
+            "name": "data",
+            "host": {
+                "sourcePath": "/data/db"
+            }
+        }
+    ],
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
-            "name": "hello-world-test-four",
+            "name": "hello-world",
             "cpu": 10,
             "memory": 256,
             "essential": true,
@@ -16,12 +30,10 @@
             "links": [
                 "mongo"
             ],
-            "volumes": [
+            "mountPoints": [
                 {
-                    "name": "app",
-                    "host": {
-                        "sourcePath": "./:/app"
-                    }
+                    "sourceVolume": "app",
+                    "containerPath": "./:/app"
                 }
             ]
         },
@@ -49,17 +61,15 @@
             "cpu": "10",
             "memory": "256",
             "essential": "true",
-            "volumes": [
-                {
-                    "name": "data",
-                    "host": {
-                        "sourcePath": "/data/db"
-                    }
-                }
-            ],
             "entryPoint": [
                 "/bin/bash"
-            ]
+            ],
+            "mountPoints": [
+                {
+                    "sourceVolume": "data",
+                    "containerPath": "/data/db"
+                }
+            ]            
         }
     ]
 }
