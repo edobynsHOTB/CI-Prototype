@@ -22,12 +22,12 @@
                 }
             ],
             "links": [
-                "mongo"
+                "Mongo"
             ]
         },
         {
             "image": "mongo",
-            "name": "mongo",
+            "name": "Mongo",
             "cpu": 10,
             "memory": 256,
             "essential": true,
