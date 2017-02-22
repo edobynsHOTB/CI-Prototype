@@ -38,10 +38,14 @@ node {
             docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/hello-world', 'ecr:us-west-1:demo-credentials') {
                 docker.image('hello-world').push('v_${BUILD_NUMBER}')
                 docker.image('hello-world').push('latest')
+            }
 
+            docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/mongo', 'ecr:us-west-1:demo-credentials') {
                 docker.image('mongo').push('v_${BUILD_NUMBER}')
                 docker.image('mongo').push('latest')
+            }
 
+            docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/mongodata', 'ecr:us-west-1:demo-credentials') {
                 docker.image('mongodata').push('v_${BUILD_NUMBER}')
                 docker.image('mongodata').push('latest')
             }
