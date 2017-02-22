@@ -22,7 +22,7 @@
                 }
             ],
             "links": [
-                "mongo:db"
+                "mongo"
             ]
         },
         {
