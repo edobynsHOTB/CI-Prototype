@@ -38,6 +38,9 @@
                 {
                     "sourceContainer": "mongodata"
                 }
+            ],
+            "entryPoint": [
+                "/bin/bash"
             ]
         },
         {
@@ -51,7 +54,10 @@
                     "sourceVolume": "data",
                     "containerPath": "/data/db"
                 }
-            ]            
+            ],
+            "entryPoint": [
+                "/bin/bash"
+            ]
         }
     ]
 }
