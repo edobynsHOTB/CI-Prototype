@@ -1,7 +1,6 @@
 version: "2"
 services:
   hello-world:
-    
     build: .
     volumes:
       - ./:/app
