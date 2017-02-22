@@ -22,7 +22,10 @@ node {
         if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
             //sh "docker build -t hello-world ./src/Nodejs"
 
-            sh "./src/Nodejs/docker-compose build"
+            sh '''
+            cd ./src/Nodejs 
+            docker-compose build
+            '''
         }
     }
 
