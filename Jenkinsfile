@@ -20,7 +20,9 @@ node {
 
     stage ('Build') {
         if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
-            sh "docker build -t hello-world ./src/Nodejs"
+            //sh "docker build -t hello-world ./src/Nodejs"
+
+            sh "./src/Nodejs/docker-compose build"
         }
     }
 
@@ -33,6 +35,12 @@ node {
             docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/hello-world', 'ecr:us-west-1:demo-credentials') {
                 docker.image('hello-world').push('v_${BUILD_NUMBER}')
                 docker.image('hello-world').push('latest')
+
+                docker.image('mongo').push('v_${BUILD_NUMBER}')
+                docker.image('mongo').push('latest')
+
+                docker.image('mongodata').push('v_${BUILD_NUMBER}')
+                docker.image('mongodata').push('latest')
             }
         }
     }
