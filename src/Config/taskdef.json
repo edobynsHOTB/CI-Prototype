@@ -12,8 +12,8 @@
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
             "name": "hello-world",
-            "cpu": 10,
-            "memory": 256,
+            "cpu": 4,
+            "memory": 128,
             "essential": true,
             "portMappings": [
                 {
@@ -28,8 +28,8 @@
         {
             "image": "mongo",
             "name": "Mongo",
-            "cpu": 10,
-            "memory": 256,
+            "cpu": 4,
+            "memory": 128,
             "essential": true,
             "portMappings": [
                 {
@@ -46,8 +46,8 @@
         {
             "image": "mongo",
             "name": "mongodata",
-            "cpu": 10,
-            "memory": 256,
+            "cpu": 4,
+            "memory": 128,
             "essential": true,
             "mountPoints": [
                 {
