@@ -20,7 +20,7 @@ node {
 
     stage ('Build') {
         if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
-            docker.build('hello-world')
+            docker build -t hello-world ./src/Nodejs
         }
     }
 
