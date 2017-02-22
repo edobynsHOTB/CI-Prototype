@@ -1,6 +1,14 @@
 FROM node:latest
-ADD package.json package.json
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY package.json /app
+
 RUN npm install
-ADD . .
+
+COPY . /app
+
 EXPOSE 3000
+
 CMD ["npm", "start"]

@@ -13,6 +13,42 @@
                     "hostPort": 3000
                 }
             ]
+        },
+        {
+            "image": "mongo",
+            "name": "mongo",
+            "cpu": "10",
+            "memory": "256",
+            "essential": "true",
+            "portMappings": [
+                {
+                    "containerPort": 27017,
+                    "hostPort": 27017
+                }
+            ],
+            "volumesFrom": [
+                {
+                    "sourceContainer": "mongodata"
+                }
+            ]
+        },
+        {
+            "image": "mongo",
+            "name": "mongodata",
+            "cpu": "10",
+            "memory": "256",
+            "essential": "true",
+            "volumes": [
+                {
+                    "name": "data",
+                    "host": {
+                        "sourcePath": "/data/db"
+                    }
+                }
+            ],
+            "entryPoint": [
+                "/bin/bash"
+            ]
         }
     ]
 }
