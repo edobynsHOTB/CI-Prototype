@@ -24,7 +24,7 @@ node {
 
             sh '''
             cd ./src/Nodejs 
-            docker-compose build
+            docker-compose build -p
             '''
         }
     }
@@ -36,8 +36,8 @@ node {
             '''
 
             docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/hello-world', 'ecr:us-west-1:demo-credentials') {
-              docker.image('nodejs_hello-world').push('v_${BUILD_NUMBER}')
-              docker.image('nodejs_hello-world').push('latest')
+              docker.image('hello-world').push('v_${BUILD_NUMBER}')
+              docker.image('hello-world').push('latest')
                 //docker.image('hello-world').push('v_${BUILD_NUMBER}')
                 //docker.image('hello-world').push('latest')
             }
