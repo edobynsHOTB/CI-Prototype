@@ -20,9 +20,6 @@
                     "containerPort": 3000,
                     "hostPort": 3000
                 }
-            ],
-            "links": [
-                "Mongo"
             ]
         },
         {
