@@ -45,22 +45,22 @@
             // "entryPoint": [
             //     "/bin/bash"
             // ]
-        },
-        {
-            "image": "mongo",
-            "name": "mongodata",
-            "cpu": 4,
-            "memory": 128,
-            "essential": true,
-            "mountPoints": [
-                {
-                    "sourceVolume": "data",
-                    "containerPath": "/data/db"
-                }
-            ],
-            "entryPoint": [
-                "/bin/bash"
-            ]
         }
+        // {
+        //     "image": "mongo",
+        //     "name": "mongodata",
+        //     "cpu": 4,
+        //     "memory": 128,
+        //     "essential": true,
+        //     "mountPoints": [
+        //         {
+        //             "sourceVolume": "data",
+        //             "containerPath": "/data/db"
+        //         }
+        //     ],
+        //     "entryPoint": [
+        //         "/bin/bash"
+        //     ]
+        // }
     ]
 }
