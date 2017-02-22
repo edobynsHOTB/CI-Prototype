@@ -20,13 +20,13 @@ node {
 
     stage ('Build') {
         if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
-            //sh "docker build -t hello-world ./src/Nodejs"
+            sh "docker build -t hello-world ./src/Nodejs"
 
-            sh '''
+            /*sh '''
             cd ./src/Nodejs 
             docker-compose build
             docker tag nodejs_hello-world hello-world
-            '''
+            '''*/
         }
     }
 
