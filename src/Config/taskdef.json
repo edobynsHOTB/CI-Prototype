@@ -1,13 +1,13 @@
 {
     "family": "hello-world-newest",
-    "volumes": [
-        {
-            "name": "data",
-            "host": {
-                "sourcePath": "/data/db"
-            }
-        }
-    ],
+    // "volumes": [
+    //     {
+    //         "name": "data",
+    //         "host": {
+    //             "sourcePath": "/data/db"
+    //         }
+    //     }
+    // ],
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
@@ -20,28 +20,31 @@
                     "containerPort": 3000,
                     "hostPort": 3000
                 }
+            ],
+            "links": [
+                "mongo:db"
             ]
         },
         {
             "image": "mongo",
-            "name": "Mongo",
+            "name": "mongo",
             "cpu": 4,
             "memory": 128,
-            "essential": true,
-            "portMappings": [
-                {
-                    "containerPort": 27017,
-                    "hostPort": 27017
-                }
-            ],
-            "volumesFrom": [
-                {
-                    "sourceContainer": "mongodata"
-                }
-            ],
-            "entryPoint": [
-                "/bin/bash"
-            ]
+            "essential": true
+            // "portMappings": [
+            //     {
+            //         "containerPort": 27017,
+            //         "hostPort": 27017
+            //     }
+            // ],
+            // "volumesFrom": [
+            //     {
+            //         "sourceContainer": "mongodata"
+            //     }
+            // ],
+            // "entryPoint": [
+            //     "/bin/bash"
+            // ]
         },
         {
             "image": "mongo",
