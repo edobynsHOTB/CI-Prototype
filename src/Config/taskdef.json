@@ -40,9 +40,9 @@
         {
             "image": "mongo",
             "name": "mongo",
-            "cpu": "10",
-            "memory": "256",
-            "essential": "true",
+            "cpu": 10,
+            "memory": 256,
+            "essential": true,
             "portMappings": [
                 {
                     "containerPort": 27017,
@@ -58,9 +58,9 @@
         {
             "image": "mongo",
             "name": "mongodata",
-            "cpu": "10",
-            "memory": "256",
-            "essential": "true",
+            "cpu": 10,
+            "memory": 256,
+            "essential": true,
             "entryPoint": [
                 "/bin/bash"
             ],
