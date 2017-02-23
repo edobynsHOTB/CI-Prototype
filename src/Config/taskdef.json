@@ -21,12 +21,6 @@
                     "hostPort": 3000
                 }
             ],
-            "mountPoints": [
-                {
-                    "sourceVolume": "db",
-                    "containerPath": "/data/db"
-                }
-            ],
             "links": [
                 "db"
             ]
