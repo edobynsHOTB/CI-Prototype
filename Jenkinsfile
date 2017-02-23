@@ -62,7 +62,7 @@ node {
                 REPOSITORY_NAME=hello-world
                 CLUSTER=getting-started
                 FAMILY=newnew
-                NAME=newtaskdefcontainer
+                NAME=newServiceTitle
                 SERVICE_NAME=${NAME}-service
 
                 #Store the repositoryUri as a variable
