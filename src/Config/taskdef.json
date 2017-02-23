@@ -2,9 +2,9 @@
     "family": "hello-world-newest",
     "volumes": [
         {
-            "name": "database",
+            "name": "db",
             "host": {
-                "sourcePath": "/var/lib/CaliPrototype/db/"
+                "sourcePath": "/src"
             }
         }
     ],
@@ -21,26 +21,31 @@
                     "hostPort": 3000
                 }
             ],
+            "mountPoints": [
+                {
+                    "sourceVolume": "db",
+                    "containerPath": "/src/money"
+                }
+            ],
             "links": [
-                "mongo"
+                "db"
             ]
         },
         {
+            "name": "db",
             "image": "mongo",
-            "name": "mongo",
-            "cpu": 10,
-            "memory": 256,
             "essential": true,
+            "memory": 128,
             "portMappings": [
                 {
-                    "containerPort": 27017,
-                    "hostPort": 27017
+                "hostPort": 27017,
+                "containerPort": 27017
                 }
             ],
             "mountPoints": [
                 {
-                    "sourceVolume": "database",
-                    "containerPath": "/usr/src/CaliPrototype/db"
+                "sourceVolume": "db",
+                "containerPath": "/src/money"
                 }
             ]
         }
