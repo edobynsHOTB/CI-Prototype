@@ -4,7 +4,7 @@
         {
             "name": "db",
             "host": {
-                "sourcePath": "/data/db"
+                "sourcePath": "/db/data"
             }
         }
     ],
@@ -40,7 +40,7 @@
             "mountPoints": [
                 {
                     "sourceVolume": "db",
-                    "containerPath": "/data/db"
+                    "containerPath": "/usr/share/db/data"
                 }
             ]
         }
