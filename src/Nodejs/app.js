@@ -6,14 +6,14 @@ var mongoose = require("mongoose");
 
 mongoose.connect('mongodb://mongo:27017');
 
-// var schema = mongoose.Schema({ name: 'string' });
-// var Event3 = mongoose.model('Event3', schema);
+var schema = mongoose.Schema({ name: 'string' });
+var Event4 = mongoose.model('Event4', schema);
 
-// var event4 = new Event4({ name: 'something' });
-// event4.save(function (err) {
-//   if (err) // ...
-//   console.log('meow');
-// });
+var event4 = new Event4({ name: 'something' });
+event4.save(function (err) {
+  if (err) // ...
+  console.log('meow');
+});
 
 app.get('/', function (req, res) {
 
@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
     Object.keys(connection.models).forEach((collection) => {
         // You can get the string name.
         console.info(collection);
-        
+
         // Or you can do something else with the model.
         res.send(collection);
     });
