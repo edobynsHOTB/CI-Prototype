@@ -94,6 +94,14 @@ node {
                     echo "New Service"
                     aws ecs create-service --service-name ${SERVICE_NAME} --desired-count 1 --task-definition ${FAMILY} --cluster ${CLUSTER} --region ${REGION}
                 fi
+
+                stop ecs
+                sleep 2
+                start ecs
+                sleep 2
+                service docker stop
+                sleep 4
+                service docker start
             '''
         }
     }
