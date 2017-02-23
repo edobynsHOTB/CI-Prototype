@@ -2,9 +2,9 @@
     "family": "hello-world-newest",
     "volumes": [
         {
-            "name": "data",
+            "name": "database",
             "host": {
-                "sourcePath": "/data"
+                "sourcePath": "/var/lib/CaliPrototype/db/"
             }
         }
     ],
@@ -39,8 +39,8 @@
             ],
             "mountPoints": [
                 {
-                    "sourceVolume": "data",
-                    "containerPath": "/usr/share/mongo/db"
+                    "sourceVolume": "database",
+                    "containerPath": "/usr/src/CaliPrototype/db"
                 }
             ]
         }

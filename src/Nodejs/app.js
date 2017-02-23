@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
         res.send(collection);
     });
 
-    res.send('This would be where someone might say, "Fuck you World" - connected to mongo...')
+    // res.send('This would be where someone might say, "Fuck you World" - connected to mongo...')
 })
 
 app.listen(3000, function () {
