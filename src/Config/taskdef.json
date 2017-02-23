@@ -4,7 +4,7 @@
         {
             "name": "db",
             "host": {
-                "sourcePath": "/src"
+                "sourcePath": "/data/db"
             }
         }
     ],
@@ -24,7 +24,7 @@
             "mountPoints": [
                 {
                     "sourceVolume": "db",
-                    "containerPath": "/src/money"
+                    "containerPath": "/data/db"
                 }
             ],
             "links": [
@@ -45,7 +45,7 @@
             "mountPoints": [
                 {
                 "sourceVolume": "db",
-                "containerPath": "/src/money"
+                "containerPath": "/data/db"
                 }
             ]
         }
