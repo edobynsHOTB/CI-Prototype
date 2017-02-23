@@ -7,10 +7,10 @@ var mongoose = require("mongoose");
 mongoose.connect('mongodb://mongo:27017');
 
 var schema = mongoose.Schema({ name: 'string' });
-var Event2 = mongoose.model('Event2', schema);
+var Event3 = mongoose.model('Event3', schema);
 
-var event2 = new Event2({ name: 'something' });
-event2.save(function (err) {
+var event3 = new Event3({ name: 'something' });
+event3.save(function (err) {
   if (err) // ...
   console.log('meow');
 });
