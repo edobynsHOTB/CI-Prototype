@@ -22,6 +22,7 @@ app.get('/', function (req, res) {
         // You can get the string name.
         console.info(collection);
 
+
         // Or you can do something else with the model.
         res.send(collection);
     });
