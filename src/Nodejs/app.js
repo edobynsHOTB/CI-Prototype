@@ -21,6 +21,7 @@ app.get('/', function (req, res) {
     Object.keys(connection.models).forEach((collection) => {
         // You can get the string name.
         console.info(collection);
+        
         // Or you can do something else with the model.
         res.send(collection);
     });
