@@ -2,9 +2,9 @@
     "family": "hello-world-newest",
     "volumes": [
         {
-            "name": "webdata",
+            "name": "data",
             "host": {
-                "sourcePath": "/ecs/webdata"
+                "sourcePath": "/data"
             }
         }
     ],
@@ -39,8 +39,8 @@
             ],
             "mountPoints": [
                 {
-                    "sourceVolume": "webdata",
-                    "containerPath": "/usr/share/nginx/html"
+                    "sourceVolume": "data",
+                    "containerPath": "/usr/share/mongo/db"
                 }
             ]
         }
