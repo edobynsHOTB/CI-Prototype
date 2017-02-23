@@ -6,14 +6,14 @@ var mongoose = require("mongoose");
 
 mongoose.connect('mongodb://mongo:27017');
 
-var schema = mongoose.Schema({ name: 'string' });
-var Event4 = mongoose.model('Event4', schema);
+// var schema = mongoose.Schema({ name: 'string' });
+// var Event4 = mongoose.model('Event4', schema);
 
-var event4 = new Event4({ name: 'something' });
-event4.save(function (err) {
-  if (err) // ...
-  console.log('meow');
-});
+// var event4 = new Event4({ name: 'something' });
+// event4.save(function (err) {
+//   if (err) // ...
+//   console.log('meow');
+// });
 
 app.get('/', function (req, res) {
 
