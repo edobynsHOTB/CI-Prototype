@@ -32,6 +32,6 @@ node {
     }
 
     stage ('Deploy') {
-        
+        println "deploy to aws s3"
     }
 }
