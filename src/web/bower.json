@@ -1,0 +1,10 @@
+{
+  "name": "assemble-boilerplate",
+  "version": "0.1.1",
+  "main": [
+    "lib/assemble-boilerplate"
+  ],
+  "dependencies": {
+    "bootstrap": "latest"
+  }
+}

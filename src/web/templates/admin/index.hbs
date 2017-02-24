@@ -1,0 +1,31 @@
+---
+title: Admin
+---
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a href="#" class="btn btn-primary">Date Range</a>
+            <span class="text-muted date-range">Date Range: 88/88/8888 - 88/88/8888</span>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        {{> alert-map }}
+
+        <h3>Create An Alert</h3>
+        {{> alert-create}}
+    </div>
+    <div class="col-md-4">
+        <div class="admin-api">
+            <h3>API Generated Alerts</h3>
+            {{> admin-api-alerts}}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{> admin-current}}
+    </div>
+</div>

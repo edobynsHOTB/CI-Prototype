@@ -1,0 +1,68 @@
+<div id="map" class="alert-map"></div>
+<script>
+    /*function initMap() {
+                var test = {lat: 33.632478, lng: -117.734862};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 7,
+                  center: test
+                });
+                var marker = new google.maps.Marker({
+                  position: test,
+                  map: map
+                });
+              }*/
+
+    var map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: new google.maps.LatLng(33.632478, -117.734862),
+            mapTypeId: 'roadmap'
+        });
+
+        var alertMarker = {
+            path: 'M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0',
+            fillColor: 'red',
+            fillOpacity: 1,
+            scale: .08
+        };
+        var eventType = 'Event Type',
+            eventLocation = 'Affected Location',
+            eventDetails = 'Event Details';
+
+        var contentString = '<div class="popover top">' +
+            '<div class="arrow"></div>' +
+            '<div class="popover-content">' +
+            '<h5>' + eventType + '</h5>' +
+            +eventLocation + '<br/>' +
+            eventDetails +
+            '</div>' +
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+
+        var marker = new google.maps.Marker({
+            position: map.getCenter(),
+            icon: alertMarker,
+            draggable: true,
+            map: map
+        });
+
+
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+
+
+
+
+
+
+    }
+</script>
+{{maps api-keys.GoogleMapsAPI}}

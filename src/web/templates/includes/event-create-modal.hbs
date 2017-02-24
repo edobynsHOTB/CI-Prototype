@@ -1,0 +1,46 @@
+<div class="modal fade" tabindex="-1" id="createEvent" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create An Event</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert-create">
+            <form>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>Event Type</label><br />
+                        <select class="form-control">
+                            <option>
+                                Select a Current Event
+                            </option>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label>Affected Area</label>
+                        <select class="form-control">
+                            <option>
+                                Select a Current Event
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>&nbsp;</label><br />
+                        <a href="#" class="btn btn-default">Add Affected Area</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Event</button>
+                <button type="submit" class="btn btn-primary">Create Event and Add Alert</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

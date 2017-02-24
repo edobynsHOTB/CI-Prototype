@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{> head }}
+  </head>
+  <body>
+    {{#if production}}
+      {{> tags }} {{! Google Tags. See https://www.google.com/tagmanager/}}
+    {{/if}}
+    <!-- Navigation component -->
+    {{> nav-admin }}
+
+<div class="content">
+  {{> admin-events }}
+
+    <div class="container">
+      {{> body }}
+    </div>
+
+    {{> alert-create-modal}}
+    {{> event-create-modal}}
+  </div>
+
+    <!-- Footer -->
+    {{> admin-footer }}
+
+    <!-- JS and analytics only. -->
+    {{> javascripts }}
+  </body>
+</html>

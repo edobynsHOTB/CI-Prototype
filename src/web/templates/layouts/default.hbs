@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{> head }}
+  </head>
+  <body>
+    {{#if production}}
+      {{> tags }} {{! Google Tags. See https://www.google.com/tagmanager/}}
+    {{/if}}
+
+      {{> body }}
+
+    <!-- JS and analytics only. -->
+    {{> javascripts }}
+  </body>
+</html>
