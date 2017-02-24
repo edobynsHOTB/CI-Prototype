@@ -1,0 +1,31 @@
+node {
+
+    String BRANCH_PLATFORM = ""
+
+    stage ('Checkout') {
+        // Checkout code for the pushed branch
+        checkout scm
+
+        // Get the name of the Platform that was committed to (i.e. master, server, ios, android, etc.)
+        BRANCH_PLATFORM = sh(script: '''#!/bin/bash
+            gitHead=$(git describe --contains --all HEAD)
+            newVar=${gitHead#*/}
+            newerVar=${newVar#*/}
+            finalVar=${newerVar%%/*}
+            echo $finalVar
+        ''', returnStdout: true).trim()
+
+        println BRANCH_PLATFORM
+    }
+    
+    stage ('Build') {
+        sh '''#!/bin/bash
+            cd src/web
+            npm install
+        '''
+    }
+    
+    stage ('Deploy') {
+        
+    }
+}
