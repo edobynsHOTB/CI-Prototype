@@ -21,6 +21,10 @@ node {
     stage ('Build') {
         sh '''#!/bin/bash
             cd src/web
+
+            def nodeHome = tool 'NodeTool'
+            env.PATH="${env.PATH}:${nodeHome}/bin"
+
             npm install
             bower install
             grunt
