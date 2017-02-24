@@ -17,11 +17,11 @@ node {
 
         println BRANCH_PLATFORM
     }
-    
+
     stage ('Build') {
         sh '''#!/bin/bash
             cd src/web
-            //npm install
+            #npm install
         '''
     }
     
