@@ -21,7 +21,7 @@ node {
     stage ('Build') {
         sh '''#!/bin/bash
             cd src/web
-            npm install
+            //npm install
         '''
     }
     
