@@ -86,8 +86,8 @@ node {
             function update_ecs_task_def() {
                 echo "UPDATE ECS TASK DEF -"
                 if CURRENT_TASK_REVISION=$(aws ecs register-task-definition --container-definitions "$1" \
-                                                                            --family $ECS_FAMILY \
-                                                                            --region $ECS_REGION \
+                                                                            --family $ECS_FAMILY  \
+                                                                            --region $ECS_REGION
                                                                             | $JQ '.taskDefinition.taskDefinitionArn'); then
                     echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Successfully register task definition :\n\tfamily : $ECS_FAMILY\n\tRevision : $CURRENT_TASK_REVISION\n"
                     return 0
