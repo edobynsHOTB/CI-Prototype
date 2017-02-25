@@ -42,14 +42,14 @@ node {
         # Functions
         ####
             function get_ecs_status() {
+                echo "GET ECS STATUS -"
                 DECRIBED_SERVICE=$(aws ecs describe-services --cluster $ECS_CLUSTER \
-                                                            --services $ECS_SERVICE
-                                                            --region $ECS_REGION);
+                                                            --services $ECS_SERVICE);
 
                 CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
                 CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
                 CURRENT_RUNNING_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
-                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition !=\"$CURRENT_TASK_REVISION\") | .taskDefinition")
+                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition != \"$CURRENT_TASK_REVISION\") | .taskDefinition")
                 if [[ -z "$CURRENT_STALE_TASK" ]]; then
                     CURRENT_STALE_TASK=0
                 fi
@@ -57,6 +57,7 @@ node {
 
 
             function update_ecs_service() {
+                echo "UPDATE ECS SERVICE -"
                 output=$(aws ecs update-service --cluster $ECS_CLUSTER \
                                                 --service $ECS_SERVICE \
                                                 --task-definition $1 \
@@ -69,6 +70,7 @@ node {
             }
 
             function update_ecs_task_def() {
+                echo "UPDATE ECS TASK DEF -"
                 if CURRENT_TASK_REVISION=$(aws ecs register-task-definition --container-definitions "$1" \
                                                                             --family $ECS_FAMILY  \
                                                                             | $JQ '.taskDefinition.taskDefinitionArn'); then
