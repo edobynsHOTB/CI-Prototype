@@ -30,7 +30,7 @@ node {
 
         ECS_REGION=us-west-1
         ECR_REPOSITORY_NAME=hello-world
-        ECS_CLUSTER=us-west-1
+        ECS_CLUSTER=getting-started
         ECS_SERVICE=newServiceTitle-service
         ECS_FAMILY=newnew
         ECS_TASK_DEFINITION=newServiceTitle
