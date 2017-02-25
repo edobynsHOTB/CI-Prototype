@@ -50,7 +50,7 @@ node {
                 CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
                 CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
                 CURRENT_RUNNING_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
-                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition != \"$CURRENT_TASK_REVISION\") | .taskDefinition")
+                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition != '"$CURRENT_TASK_REVISION"') | .taskDefinition")
                 if [[ -z "$CURRENT_STALE_TASK" ]]; then
                     CURRENT_STALE_TASK=0
                 fi
@@ -73,6 +73,7 @@ node {
                 echo "$2"
                 output=$(aws ecs update-service --cluster $ECS_CLUSTER \
                                                 --service $ECS_SERVICE \
+                                                --region $ECS_REGION \ 
                                                 --task-definition $1 \
                                                 --desired-count $2)
 
@@ -85,7 +86,8 @@ node {
             function update_ecs_task_def() {
                 echo "UPDATE ECS TASK DEF -"
                 if CURRENT_TASK_REVISION=$(aws ecs register-task-definition --container-definitions "$1" \
-                                                                            --family $ECS_FAMILY  \
+                                                                            --family $ECS_FAMILY \
+                                                                            --region $ECS_REGION \
                                                                             | $JQ '.taskDefinition.taskDefinitionArn'); then
                     echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Successfully register task definition :\n\tfamily : $ECS_FAMILY\n\tRevision : $CURRENT_TASK_REVISION\n"
                     return 0
