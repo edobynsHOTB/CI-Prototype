@@ -73,9 +73,9 @@ node {
                 echo "$2"
                 output=$(aws ecs update-service --cluster $ECS_CLUSTER \
                                                 --service $ECS_SERVICE \
-                                                --region $ECS_REGION \ 
                                                 --task-definition $1 \
-                                                --desired-count $2)
+                                                --desired-count $2 \
+                                                --region $ECS_REGION)
 
                 if [[ $(echo $output | $JQ '.service.taskDefinition') != $1  ]] || [[ $(echo $output | $JQ '.service.desiredCount') != $2  ]];  then
                     echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Error, in setting service"
