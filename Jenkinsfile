@@ -54,11 +54,22 @@ node {
                 if [[ -z "$CURRENT_STALE_TASK" ]]; then
                     CURRENT_STALE_TASK=0
                 fi
+
+                echo "GET ECS STATUS RESULTS -"
+                echo "$DESCRIBED_SERVICE"
+                echo "$CURRENT_DESIRED_COUNT"
+                echo "$CURRENT_TASK_REVISION"
+                echo "$CURRENT_RUNNING_TASK"
+                echo "$CURRENT_STALE_TASK"
             }
 
 
             function update_ecs_service() {
                 echo "UPDATE ECS SERVICE -"
+                echo "$ECS_CLUSTER"
+                echo "$ECS_SERVICE"
+                echo "$1"
+                echo "$2"
                 output=$(aws ecs update-service --cluster $ECS_CLUSTER \
                                                 --service $ECS_SERVICE \
                                                 --task-definition $1 \
