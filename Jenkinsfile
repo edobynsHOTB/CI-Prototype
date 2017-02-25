@@ -51,6 +51,10 @@ node {
                 CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
                 CURRENT_RUNNING_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
                 CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition != "$CURRENT_TASK_REVISION") | .taskDefinition")
+
+                echo "stale task:"
+                echo "$CURRENT_STALE_TASK"
+
                 if [[ -z "$CURRENT_STALE_TASK" ]]; then
                     CURRENT_STALE_TASK=0
                 fi
