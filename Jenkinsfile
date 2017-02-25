@@ -44,7 +44,8 @@ node {
             function get_ecs_status() {
                 echo "GET ECS STATUS -"
                 DECRIBED_SERVICE=$(aws ecs describe-services --cluster $ECS_CLUSTER \
-                                                            --services $ECS_SERVICE);
+                                                            --services $ECS_SERVICE \
+                                                            --region $ECS_REGION);
 
                 CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
                 CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
