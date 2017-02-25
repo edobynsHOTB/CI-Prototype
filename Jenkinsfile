@@ -69,40 +69,7 @@ node {
             ECS_FAMILY=newnew
             ECS_TASK_DEFINITION=newServiceTitle
 
-            get_ecs_status;
-            DESIRED_COUNT=$CURRENT_DESIRED_COUNT
 
-            if [[ $DESIRED_COUNT>0 ]]; then
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Decrease the desired numberof running task instances by one ($DESIRED_COUNT - 1 =$(expr $DESIRED_COUNT - 1))"
-                echo "Otherwise, the deploy will fail if cluster is not able to support one additional instance (We assume this is not the case)."
-                
-                update_ecs_service $CURRENT_TASK_REVISION $(expr $DESIRED_COUNT - 1)
-            else
-                echo -e "$(date "+%Y-%m-%d %H:%M:%S") Service has currently 0 desired running instances. Setting the desired running task instance to 1"
-                DESIRED_COUNT=1
-            fi
-
-            
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Update the Task definition (Includes the new docker images to use)"
-            revision=$(update_ecs_task_def "$ECS_TASK_DEFINITION")
-
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Update the service to use the newly created task revision ($CURRENT_TASK_REVISION)"
-            update_ecs_service "$CURRENT_TASK_REVISION" "$(expr $DESIRED_COUNT - 1)"
-
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task instance to decrease to $(expr $DESIRED_COUNT - 1)"
-            wait_ecs_nb_task $(expr $DESIRED_COUNT - 1)
-
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Done ... Now we can now re-set the original desired number task instance ($DESIRED_COUNT)"
-            update_ecs_service "$CURRENT_TASK_REVISION" "$DESIRED_COUNT"
-
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task to reach the original desired number of instances ($DESIRED_COUNT)"
-            wait_ecs_nb_task $DESIRED_COUNT
-
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for stale task to be replaced by their new revision"
-            wait_ecs_no_stale_task
-
-            echo "$(date "+%Y-%m-%d %H:%M:%S") Deploy completed successfully. "
-            echo "THANK YOU COME AGAIN!"
 
 
             ####
@@ -175,6 +142,49 @@ node {
                     echo "\n\nService update took too long.\n\n"
                     exit 4
                 }
+
+                ##################
+
+
+                get_ecs_status;
+                DESIRED_COUNT=$CURRENT_DESIRED_COUNT
+
+                if [[ $DESIRED_COUNT>0 ]]; then
+                    echo "$(date "+%Y-%m-%d %H:%M:%S") Decrease the desired numberof running task instances by one ($DESIRED_COUNT - 1 =$(expr $DESIRED_COUNT - 1))"
+                    echo "Otherwise, the deploy will fail if cluster is not able to support one additional instance (We assume this is not the case)."
+                    
+                    update_ecs_service $CURRENT_TASK_REVISION $(expr $DESIRED_COUNT - 1)
+                else
+                    echo -e "$(date "+%Y-%m-%d %H:%M:%S") Service has currently 0 desired running instances. Setting the desired running task instance to 1"
+                    DESIRED_COUNT=1
+                fi
+
+                
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Update the Task definition (Includes the new docker images to use)"
+                revision=$(update_ecs_task_def "$ECS_TASK_DEFINITION")
+
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Update the service to use the newly created task revision ($CURRENT_TASK_REVISION)"
+                update_ecs_service "$CURRENT_TASK_REVISION" "$(expr $DESIRED_COUNT - 1)"
+
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task instance to decrease to $(expr $DESIRED_COUNT - 1)"
+                wait_ecs_nb_task $(expr $DESIRED_COUNT - 1)
+
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Done ... Now we can now re-set the original desired number task instance ($DESIRED_COUNT)"
+                update_ecs_service "$CURRENT_TASK_REVISION" "$DESIRED_COUNT"
+
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task to reach the original desired number of instances ($DESIRED_COUNT)"
+                wait_ecs_nb_task $DESIRED_COUNT
+
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for stale task to be replaced by their new revision"
+                wait_ecs_no_stale_task
+
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Deploy completed successfully. "
+                echo "THANK YOU COME AGAIN!"
+
+
+
+
+
             '''
         }
     }
