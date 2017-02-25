@@ -3,191 +3,152 @@ node {
     String BRANCH_PLATFORM = ""
 
     stage ('Checkout') {
-
         // Checkout code for the pushed branch
         checkout scm
-
-        // Get the name of the Platform that was committed to (i.e. master, server, ios, android, etc.)
-        BRANCH_PLATFORM = sh(script: '''#!/bin/bash
-            gitHead=$(git describe --contains --all HEAD)
-            newVar=${gitHead#*/}
-            newerVar=${newVar#*/}
-            finalVar=${newerVar%%/*}
-            echo $finalVar
-        ''', returnStdout: true).trim()
-
-        println BRANCH_PLATFORM
     }
 
     stage ('Build') {
-        if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
-            sh "docker build -t hello-world ./src/Nodejs"
-
-            /*sh '''
-            cd ./src/Nodejs 
-            docker-compose build
-            docker tag nodejs_hello-world hello-world
-            '''*/
-        }
+        sh "docker build -t hello-world ./src/Nodejs"
     }
 
     stage ('Publish') {
-        if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
-            sh '''#!/bin/bash
-                $(aws ecr get-login --region us-west-1)
-            '''
+        sh '''#!/bin/bash
+            $(aws ecr get-login --region us-west-1)
+        '''
 
-            docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/hello-world', 'ecr:us-west-1:demo-credentials') {
-              docker.image('hello-world').push('v_${BUILD_NUMBER}')
-              docker.image('hello-world').push('latest')
-            }
-
-     /*       docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/mongo', 'ecr:us-west-1:demo-credentials') {
-                docker.image('mongo').push('v_${BUILD_NUMBER}')
-                docker.image('mongo').push('latest')
-            }
-
-            docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/mongodata', 'ecr:us-west-1:demo-credentials') {
-                docker.image('mongodata').push('v_${BUILD_NUMBER}')
-                docker.image('mongodata').push('latest')
-            } */
+        docker.withRegistry('https://607258079075.dkr.ecr.us-west-1.amazonaws.com/hello-world', 'ecr:us-west-1:demo-credentials') {
+            docker.image('hello-world').push('v_${BUILD_NUMBER}')
+            docker.image('hello-world').push('latest')
         }
     }
 
     stage ('Deploy to Staging') {
-        if (BRANCH_PLATFORM == "master" || BRANCH_PLATFORM == "server") {
+        // Create New Task Definition and Create or Update ECS Service
+        sh '''#!/bin/bash
 
-            // Create New Task Definition and Create or Update ECS Service
-            sh '''#!/bin/bash
+        JQ="jq --raw-output"
 
-            JQ="jq --raw-output"
-
-            ECS_REGION=us-west-1
-            ECR_REPOSITORY_NAME=hello-world
-            ECS_CLUSTER=us-west-1
-            ECS_SERVICE=newServiceTitle-service
-            ECS_FAMILY=newnew
-            ECS_TASK_DEFINITION=newServiceTitle
+        ECS_REGION=us-west-1
+        ECR_REPOSITORY_NAME=hello-world
+        ECS_CLUSTER=us-west-1
+        ECS_SERVICE=newServiceTitle-service
+        ECS_FAMILY=newnew
+        ECS_TASK_DEFINITION=newServiceTitle
 
 
 
 
-            ####
-            # Functions
-            ####
-                function get_ecs_status() {
-                    DECRIBED_SERVICE=$(aws ecs describe-services --cluster $ECS_CLUSTER \
-                                                                --services $ECS_SERVICE
-                                                                --region $ECS_REGION);
+        ####
+        # Functions
+        ####
+            function get_ecs_status() {
+                DECRIBED_SERVICE=$(aws ecs describe-services --cluster $ECS_CLUSTER \
+                                                            --services $ECS_SERVICE
+                                                            --region $ECS_REGION);
 
-                    CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
-                    CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
-                    CURRENT_RUNNING_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
-                    CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition !=\"$CURRENT_TASK_REVISION\") | .taskDefinition")
-                    if [[ -z "$CURRENT_STALE_TASK" ]]; then
-                        CURRENT_STALE_TASK=0
-                    fi
-                }
-
-
-                function update_ecs_service() {
-                    output=$(aws ecs update-service --cluster $ECS_CLUSTER \
-                                                    --service $ECS_SERVICE \
-                                                    --task-definition $1 \
-                                                    --desired-count $2)
-
-                    if [[ $(echo $output | $JQ '.service.taskDefinition') != $1  ]] || [[ $(echo $output | $JQ '.service.desiredCount') != $2  ]];  then
-                        echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Error, in setting service"
-                        exit 2
-                    fi
-                }
-
-                function update_ecs_task_def() {
-                    if CURRENT_TASK_REVISION=$(aws ecs register-task-definition --container-definitions "$1" \
-                                                                                --family $ECS_FAMILY  \
-                                                                                | $JQ '.taskDefinition.taskDefinitionArn'); then
-                        echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Successfully register task definition :\n\tfamily : $ECS_FAMILY\n\tRevision : $CURRENT_TASK_REVISION\n"
-                        return 0
-                    fi
-
-                    echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Failed to register task definition :\n\tfamily : $ECS_FAMILY"
-                    exit 1
-                }
-
-                function wait_ecs_nb_task() {
-                    for attempt in {1..120}; do
-                        get_ecs_status
-                    if [ $CURRENT_RUNNING_TASK -ne $CURRENT_DESIRED_COUNT ]; then
-                        sleep 1
-                    else
-                        return 0
-                    fi
-                    done
-
-                    echo -e "\n\n$(date "+%Y-%m-%d %H:%M:%S") Waiting for running count to reach $CURRENT_DESIRED_COUNT took to long. Current running task : $CURRENT_RUNNING_TASK\n\n"
-                    exit 3
-                }
-
-                function wait_ecs_no_stale_task() {
-                    for attempt in {1..240}; do
-                        get_ecs_status;
-                    echo "$(date "+%Y-%m-%d %H:%M:%S") Running : $CURRENT_RUNNING_TASK, Desired : $CURRENT_DESIRED_COUNT, Stale : $CURRENT_STALE_TASK"
-
-                    if [[ $CURRENT_STALE_TASK>0 ]]; then
-                        sleep 2
-                    else
-                        return 0
-                    fi
-                    done
-                    
-                    echo "\n\nService update took too long.\n\n"
-                    exit 4
-                }
-
-                ##################
+                CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
+                CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
+                CURRENT_RUNNING_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
+                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition !=\"$CURRENT_TASK_REVISION\") | .taskDefinition")
+                if [[ -z "$CURRENT_STALE_TASK" ]]; then
+                    CURRENT_STALE_TASK=0
+                fi
+            }
 
 
-                get_ecs_status;
-                DESIRED_COUNT=$CURRENT_DESIRED_COUNT
+            function update_ecs_service() {
+                output=$(aws ecs update-service --cluster $ECS_CLUSTER \
+                                                --service $ECS_SERVICE \
+                                                --task-definition $1 \
+                                                --desired-count $2)
 
-                if [[ $DESIRED_COUNT>0 ]]; then
-                    echo "$(date "+%Y-%m-%d %H:%M:%S") Decrease the desired numberof running task instances by one ($DESIRED_COUNT - 1 =$(expr $DESIRED_COUNT - 1))"
-                    echo "Otherwise, the deploy will fail if cluster is not able to support one additional instance (We assume this is not the case)."
-                    
-                    update_ecs_service $CURRENT_TASK_REVISION $(expr $DESIRED_COUNT - 1)
-                else
-                    echo -e "$(date "+%Y-%m-%d %H:%M:%S") Service has currently 0 desired running instances. Setting the desired running task instance to 1"
-                    DESIRED_COUNT=1
+                if [[ $(echo $output | $JQ '.service.taskDefinition') != $1  ]] || [[ $(echo $output | $JQ '.service.desiredCount') != $2  ]];  then
+                    echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Error, in setting service"
+                    exit 2
+                fi
+            }
+
+            function update_ecs_task_def() {
+                if CURRENT_TASK_REVISION=$(aws ecs register-task-definition --container-definitions "$1" \
+                                                                            --family $ECS_FAMILY  \
+                                                                            | $JQ '.taskDefinition.taskDefinitionArn'); then
+                    echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Successfully register task definition :\n\tfamily : $ECS_FAMILY\n\tRevision : $CURRENT_TASK_REVISION\n"
+                    return 0
                 fi
 
+                echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Failed to register task definition :\n\tfamily : $ECS_FAMILY"
+                exit 1
+            }
+
+            function wait_ecs_nb_task() {
+                for attempt in {1..120}; do
+                    get_ecs_status
+                if [ $CURRENT_RUNNING_TASK -ne $CURRENT_DESIRED_COUNT ]; then
+                    sleep 1
+                else
+                    return 0
+                fi
+                done
+
+                echo -e "\n\n$(date "+%Y-%m-%d %H:%M:%S") Waiting for running count to reach $CURRENT_DESIRED_COUNT took to long. Current running task : $CURRENT_RUNNING_TASK\n\n"
+                exit 3
+            }
+
+            function wait_ecs_no_stale_task() {
+                for attempt in {1..240}; do
+                    get_ecs_status;
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Running : $CURRENT_RUNNING_TASK, Desired : $CURRENT_DESIRED_COUNT, Stale : $CURRENT_STALE_TASK"
+
+                if [[ $CURRENT_STALE_TASK>0 ]]; then
+                    sleep 2
+                else
+                    return 0
+                fi
+                done
                 
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Update the Task definition (Includes the new docker images to use)"
-                revision=$(update_ecs_task_def "$ECS_TASK_DEFINITION")
+                echo "\n\nService update took too long.\n\n"
+                exit 4
+            }
 
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Update the service to use the newly created task revision ($CURRENT_TASK_REVISION)"
-                update_ecs_service "$CURRENT_TASK_REVISION" "$(expr $DESIRED_COUNT - 1)"
-
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task instance to decrease to $(expr $DESIRED_COUNT - 1)"
-                wait_ecs_nb_task $(expr $DESIRED_COUNT - 1)
-
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Done ... Now we can now re-set the original desired number task instance ($DESIRED_COUNT)"
-                update_ecs_service "$CURRENT_TASK_REVISION" "$DESIRED_COUNT"
-
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task to reach the original desired number of instances ($DESIRED_COUNT)"
-                wait_ecs_nb_task $DESIRED_COUNT
-
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for stale task to be replaced by their new revision"
-                wait_ecs_no_stale_task
-
-                echo "$(date "+%Y-%m-%d %H:%M:%S") Deploy completed successfully. "
-                echo "THANK YOU COME AGAIN!"
+            ##################
 
 
+            get_ecs_status;
+            DESIRED_COUNT=$CURRENT_DESIRED_COUNT
 
+            if [[ $DESIRED_COUNT>0 ]]; then
+                echo "$(date "+%Y-%m-%d %H:%M:%S") Decrease the desired numberof running task instances by one ($DESIRED_COUNT - 1 =$(expr $DESIRED_COUNT - 1))"
+                echo "Otherwise, the deploy will fail if cluster is not able to support one additional instance (We assume this is not the case)."
+                
+                update_ecs_service $CURRENT_TASK_REVISION $(expr $DESIRED_COUNT - 1)
+            else
+                echo -e "$(date "+%Y-%m-%d %H:%M:%S") Service has currently 0 desired running instances. Setting the desired running task instance to 1"
+                DESIRED_COUNT=1
+            fi
 
+            
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Update the Task definition (Includes the new docker images to use)"
+            revision=$(update_ecs_task_def "$ECS_TASK_DEFINITION")
 
-            '''
-        }
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Update the service to use the newly created task revision ($CURRENT_TASK_REVISION)"
+            update_ecs_service "$CURRENT_TASK_REVISION" "$(expr $DESIRED_COUNT - 1)"
+
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task instance to decrease to $(expr $DESIRED_COUNT - 1)"
+            wait_ecs_nb_task $(expr $DESIRED_COUNT - 1)
+
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Done ... Now we can now re-set the original desired number task instance ($DESIRED_COUNT)"
+            update_ecs_service "$CURRENT_TASK_REVISION" "$DESIRED_COUNT"
+
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for the number of running task to reach the original desired number of instances ($DESIRED_COUNT)"
+            wait_ecs_nb_task $DESIRED_COUNT
+
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Waiting for stale task to be replaced by their new revision"
+            wait_ecs_no_stale_task
+
+            echo "$(date "+%Y-%m-%d %H:%M:%S") Deploy completed successfully. "
+            echo "THANK YOU COME AGAIN!"
+
+        '''
     }
 
     stage ('Test') {
