@@ -4,10 +4,6 @@ node {
 
     stage ('Checkout') {
 
-        sh '''#!/bin/bash
-            mv ~/config.json src/server
-        '''
-
         // Checkout code for the pushed branch
         checkout scm
 
