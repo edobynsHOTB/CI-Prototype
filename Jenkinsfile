@@ -50,7 +50,7 @@ node {
                 CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
                 CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
                 CURRENT_RUNNING_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
-                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition !=\"$CURRENT_TASK_REVISION\") | .taskDefinition")
+                CURRENT_STALE_TASK=$(echo $DECRIBED_SERVICE | $JQ ".services[0].deployments | .[] | select(.taskDefinition !=\'$CURRENT_TASK_REVISION\') | .taskDefinition")
                 if [[ -z "$CURRENT_STALE_TASK" ]]; then
                     CURRENT_STALE_TASK=0
                 fi
