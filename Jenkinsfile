@@ -46,6 +46,13 @@ node {
         }
 
         function updateECSService() {
+            echo "Update ECS"
+            echo "$ECS_CLUSTER"
+            echo "$ECS_SERVICE"
+            echo "$1"
+            echo "$2"
+            echo "-----"
+
             output=$(aws ecs update-service --cluster $ECS_CLUSTER \
                                             --service $ECS_SERVICE \
                                             --task-definition $1 \
