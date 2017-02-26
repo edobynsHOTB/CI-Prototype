@@ -26,7 +26,7 @@ node {
 
 
         sh '''#!/bin/bash
-            aws s3 cp src/web/dist/ s3://jenkins-test-edobyns --acl public-read
+            aws s3 cp src/web/dist/ s3://jenkins-test-edobyns --acl "public-read"
         '''
     }
 }
