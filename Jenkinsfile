@@ -96,7 +96,7 @@ node {
                 CURRENT_DESIRED_COUNT=1
             fi
 
-            updateECSService ${FAMILY}:${REVISION_NUMBER} $CURRENT_DESIRED_COUNT
+            updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $CURRENT_DESIRED_COUNT
 
         else 
             createECSService;
