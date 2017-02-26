@@ -76,6 +76,7 @@ node {
             for attempt in {1..120}; do
                 getECSStatus
                 if [ $CURRENT_RUNNING_COUNT -ne $1 ]; then
+                    echo "waiting... $attempt"
                     sleep 1
                 else
                     return 0
