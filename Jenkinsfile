@@ -91,8 +91,10 @@ node {
         echo "$(date "+%Y-%m-%d %H:%M:%S")"
         getECSStatus;
 
+        REVISION_NUMBER=`aws ecs describe-task-definition --task-definition ${ECS_FAMILY} --region ${ECS_REGION} | jq .taskDefinition.revision`
+
         if [[ $CURRENT_DESIRED_COUNT>0 ]]; then
-            updateECSService $CURRENT_TASK_REVISION $(expr $CURRENT_DESIRED_COUNT - 1)
+            updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $(expr $CURRENT_DESIRED_COUNT - 1)
         else
             CURRENT_DESIRED_COUNT=1
         fi
