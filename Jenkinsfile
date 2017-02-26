@@ -74,7 +74,7 @@ node {
 
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Waiting for New Task To Start"
                 waitForNumberOfRunningTasks 1
-                echo "echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Success! New Service is currently running."
+                echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Success! New Service is currently running."
             }
 
             function getECSStatus() {
