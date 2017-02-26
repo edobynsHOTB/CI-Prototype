@@ -103,6 +103,8 @@ node {
                 CURRENT_DESIRED_COUNT=1
             fi
 
+            REVISION_NUMBER=`aws ecs describe-task-definition --task-definition ${ECS_FAMILY} --region ${ECS_REGION} | jq .taskDefinition.revision`
+
             updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $CURRENT_DESIRED_COUNT
 
         else 
