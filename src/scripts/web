@@ -23,10 +23,24 @@ node {
     stage ('Deploy') {
         println "deploy to aws s3"
 
+        step([
+            $class: 'S3BucketPublisher',
+            entries: [[
+                sourceFile: 'src/web/dist/',
+                bucket: 'jenkins-test-edobyns',
+                selectedRegion: 'us-west-1',
+                noUploadOnFailure: true,
+                managedArtifacts: true,
+                flatten: true,
+                showDirectlyInBrowser: true,
+                keepForever: true,
+            ]],
+            profileName: 'edobyns',
+            dontWaitForConcurrentBuildCompletion: false, 
+        ])
 
-
-        sh '''#!/bin/bash
+        /*sh '''#!/bin/bash
             aws s3 sync ./src/web/dist/ s3://jenkins-test-edobyns --acl "public-read"
-        '''
+        '''*/
     }
 }
