@@ -72,6 +72,21 @@ node {
                                                  --region ${ECS_REGION}
         }        
 
+        function waitForNumberOfRunningTasks() {
+            for attempt in {1..120}; do
+                getECSStatus
+                if [ $CURRENT_RUNNING_COUNT -ne $1 ]; then
+                    sleep 1
+                else
+                    return 0
+                fi
+            done
+
+            echo -e "\n\n$(date "+%Y-%m-%d %H:%M:%S") Waiting for running count to reach $CURRENT_DESIRED_COUNT took to long. Current running task : $CURRENT_RUNNING_TASK\n\n"
+            exit 3
+        }
+
+
 
         echo "$(date "+%Y-%m-%d %H:%M:%S")"
         getECSStatus;
@@ -88,6 +103,8 @@ node {
 
         SERVICE_FAILURES=$(aws ecs describe-services --services ${ECS_SERVICE} --cluster ${ECS_CLUSTER} --region ${ECS_REGION} | jq .failures[])
 
+        waitForNumberOfRunningTasks 0
+
         if [ "$SERVICE_FAILURES" == "" ]; then
 
             if [[ $CURRENT_DESIRED_COUNT=0 ]]; then
@@ -101,6 +118,9 @@ node {
         else 
             createECSService;
         fi
+
+        waitForNumberOfRunningTasks 1
+        echo "FINISHED STARTING NEW TASK... SERVER UP"
 
         '''
     }
