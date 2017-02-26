@@ -26,8 +26,6 @@ node {
         // Create New Task Definition and Create or Update ECS Service
         sh '''#!/bin/bash
 
-        JQ="jq --raw-output"
-
         ECS_REGION=us-west-1
         ECR_REPOSITORY_NAME=hello-world
         ECS_CLUSTER=getting-started
@@ -40,19 +38,12 @@ node {
                                                         --services $ECS_SERVICE \
                                                         --region $ECS_REGION);
 
-            CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].desiredCount")
-            CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | $JQ ".services[0].taskDefinition")
-            CURRENT_RUNNING_COUNT=$(echo $DECRIBED_SERVICE | $JQ ".services[0].runningCount")
+            CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | jq .services[0].desiredCount)
+            CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | jq .services[0].taskDefinition)
+            CURRENT_RUNNING_COUNT=$(echo $DECRIBED_SERVICE | jq .services[0].runningCount)
         }
 
         function updateECSService() {
-            echo "Update ECS"
-            echo "$ECS_CLUSTER"
-            echo "$ECS_SERVICE"
-            echo "$1"
-            echo "$2"
-            echo "-----"
-
             output=$(aws ecs update-service --cluster $ECS_CLUSTER \
                                             --service $ECS_SERVICE \
                                             --task-definition $1 \
