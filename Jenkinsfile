@@ -82,27 +82,7 @@ node {
 
         if [[ $CURRENT_DESIRED_COUNT>0 ]]; then
             updateECSService $CURRENT_TASK_REVISION $(expr $CURRENT_DESIRED_COUNT - 1)
-        else
-            CURRENT_DESIRED_COUNT=1
-        fi
 
-        updateTaskDefinition;
-
-        getECSStatus;
-
-        SERVICE_FAILURES=`aws ecs describe-services --services ${ECS_SERVICE} --cluster ${ECS_CLUSTER} --region ${ECS_REGION} | jq .failures[]`
-
-        if [ "$SERVICE_FAILURES" == "" ]; then
-
-            if [[ $CURRENT_DESIRED_COUNT=0 ]]; then
-                CURRENT_DESIRED_COUNT=1
-            fi
-
-            updateECSService ${FAMILY}:${REVISION_NUMBER} $CURRENT_DESIRED_COUNT
-
-        else 
-            createECSService;
-        fi
 
         '''
     }
