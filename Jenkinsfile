@@ -63,16 +63,14 @@ node {
 
         function updateTaskDefinition() {
                 #Store the repositoryUri as a variable
-                REPOSITORY_URI=`aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} \
-                                                              --region ${ECS_REGION} 
-                                                              | jq .repositories[].repositoryUri | tr -d '"'`
+                REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} --region ${ECS_REGION} | jq .repositories[].repositoryUri | tr -d '"')
 
                 #Replace the build number and respository URI placeholders with the constants above
                 sed -e "s;%BUILD_NUMBER%;${BUILD_NUMBER};g" -e "s;%REPOSITORY_URI%;${REPOSITORY_URI};g" src/Config/taskdef.json > ${ECS_TASK_DEFINITION}-v_${BUILD_NUMBER}.json
 
                 #Register the task definition in the repository
                 aws ecs register-task-definition --family ${ECS_FAMILY} \
-                                                 --cli-input-json file://${WORKSPACE}/${NAME}-v_${BUILD_NUMBER}.json \
+                                                 --cli-input-json file://${WORKSPACE}/${ECS_TASK_DEFINITION}-v_${BUILD_NUMBER}.json \
                                                  --region ${ECS_REGION}
         }        
 
