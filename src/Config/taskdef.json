@@ -1,13 +1,5 @@
 {
     "family": "hello-world-newest",
-    "volumes": [
-        {
-            "name": "db",
-            "host": {
-                "sourcePath": "/data/db"
-            }
-        }
-    ],
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
@@ -19,27 +11,6 @@
                 {
                     "containerPort": 3000,
                     "hostPort": 3000
-                }
-            ],
-            "links": [
-                "db"
-            ]
-        },
-        {
-            "name": "db",
-            "image": "mongo",
-            "essential": true,
-            "memory": 128,
-            "portMappings": [
-                {
-                "hostPort": 27017,
-                "containerPort": 27017
-                }
-            ],
-            "mountPoints": [
-                {
-                "sourceVolume": "db",
-                "containerPath": "/data/db"
                 }
             ]
         }
