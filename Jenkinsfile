@@ -51,11 +51,6 @@ node {
                                             --task-definition $1 \
                                             --desired-count $2 \
                                             --region $ECS_REGION)
-
-            if [[ $(echo $output | $JQ '.service.taskDefinition') != $1  ]] || [[ $(echo $output | $JQ '.service.desiredCount') != $2  ]];  then
-                echo -e "\n$(date "+%Y-%m-%d %H:%M:%S") Error, in setting service"
-                exit 2
-            fi
         }
 
         function createECSService() {
@@ -68,9 +63,9 @@ node {
 
         function updateTaskDefinition() {
                 #Store the repositoryUri as a variable
-                REPOSITORY_URI=`aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} \
+                REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} \
                                                               --region ${ECS_REGION} 
-                                                              | jq .repositories[].repositoryUri | tr -d '"'`
+                                                              | jq .repositories[].repositoryUri | tr -d '"');
 
                 #Replace the build number and respository URI placeholders with the constants above
                 sed -e "s;%BUILD_NUMBER%;${BUILD_NUMBER};g" -e "s;%REPOSITORY_URI%;${REPOSITORY_URI};g" src/Config/taskdef.json > ${ECS_TASK_DEFINITION}-v_${BUILD_NUMBER}.json
